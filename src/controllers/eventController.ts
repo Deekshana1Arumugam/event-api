@@ -46,6 +46,32 @@ export const getEvents = async (_req: Request, res: Response): Promise<void> => 
       res.status(500).json({ status: 500, error: 'Server error' });
     }
   };
+
+  export const updateEvent = async (req: Request, res: Response): Promise<void> => {
+    const { title, description, date } = req.body;
+
+    if (date && !Date.parse(date)) {
+      res.status(400).json({status:400, error: 'Invalid date' });
+    } else {
+      try {
+        const updated = await Event.findByIdAndUpdate(
+          req.params.id,
+          { title, description, date },
+          { new: true }
+        );
+  
+        if (!updated) {
+          res.status(404).json({status:404, error: 'Event not found' });
+        } else {
+          res.status(200).json({status:200, updated});
+        }
+  
+      } catch (err) {
+        res.status(500).json({status:500, error: 'Server error' });
+      }
+    }
+  };
+  
   
   
 
