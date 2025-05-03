@@ -71,6 +71,21 @@ export const getEvents = async (_req: Request, res: Response): Promise<void> => 
       }
     }
   };
+
+  export const deleteEvent = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const deleted = await Event.findByIdAndDelete(req.params.id);
+  
+      if (!deleted) {
+        res.status(404).json({status:404, error: 'Event not found' });
+      } else {
+        res.status(200).json({status:200, message: 'Event deleted' });
+      }
+    } catch (err) {
+      res.status(500).json({status:500, error: 'Server error' });
+    }
+  };
+  
   
   
   
